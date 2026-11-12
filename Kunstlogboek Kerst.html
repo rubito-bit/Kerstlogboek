@@ -1,0 +1,544 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Kunstlogboek Kerst</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Layout: één kolom met 12 weekkaarten; per kaart een lijstje met afbeelding links en een museumlabel rechts. */
+:root {
+  --bg: #EDF0EE;
+  --surface: #FAFBFA;
+  --surface-2: #E4E9E6;
+  --ink: #15201C;
+  --muted: #54635C;
+  --line: #C6D0CB;
+  --accent: #A3231F;
+  --accent-ink: #FFFFFF;
+  --pine: #1F4A3C;
+  --pine-ink: #FFFFFF;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-label: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1411;
+    --surface: #141D19;
+    --surface-2: #1C2823;
+    --ink: #E7EEEA;
+    --muted: #97A69F;
+    --line: #2C3A34;
+    --accent: #E8756B;
+    --accent-ink: #1A0B09;
+    --pine: #8CCBB1;
+    --pine-ink: #0B1A14;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1411;
+  --surface: #141D19;
+  --surface-2: #1C2823;
+  --ink: #E7EEEA;
+  --muted: #97A69F;
+  --line: #2C3A34;
+  --accent: #E8756B;
+  --accent-ink: #1A0B09;
+  --pine: #8CCBB1;
+  --pine-ink: #0B1A14;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 18px;
+  line-height: 1.55;
+  padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* header */
+.top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: end; }
+.kicker, .label, .chip, .stat, .save, .mono {
+  font-family: var(--font-label);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.kicker { color: var(--accent); margin: 0 0 8px; }
+h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+.intro { margin: 14px 0 0; max-width: 52ch; color: var(--muted); }
+.controls { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.controls .label { color: var(--muted); }
+input[type="date"] {
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 8px 10px;
+  min-width: 0;
+}
+
+.overview { display: flex; flex-direction: column; gap: 14px; border-top: 2px solid var(--ink); padding-top: 14px; }
+.overview-row { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; justify-content: space-between; }
+.stat { color: var(--ink); font-variant-numeric: tabular-nums; }
+.save { color: var(--muted); }
+.save[data-state="error"] { color: var(--accent); }
+.bar { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--pine); transition: width .3s ease; }
+.nav { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-grid; place-items: center;
+  width: 38px; height: 38px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+.chip:hover { border-color: var(--ink); }
+.chip.done { background: var(--pine); border-color: var(--pine); color: var(--pine-ink); }
+.notice { margin: 0; padding: 10px 14px; background: var(--surface-2); border-left: 3px solid var(--accent); font-size: 16px; }
+
+/* weekkaarten */
+.weeks { display: flex; flex-direction: column; gap: 28px; }
+.week { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; scroll-margin-top: 16px; }
+.week-head {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 20px; align-items: baseline;
+  padding: 20px 24px 16px; border-bottom: 1px solid var(--line);
+}
+.week-no { font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 5vw, 3rem); line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.week-title { min-width: 0; }
+.week-title h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 3.6vw, 2.1rem); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.week-date { color: var(--muted); margin: 4px 0 0; }
+.status { color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 3px 8px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.status.done { background: var(--pine); border-color: var(--pine); color: var(--pine-ink); }
+
+.week-body { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 28px; padding: 24px; }
+.frame { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.mat {
+  position: relative; aspect-ratio: 4 / 5; max-width: 100%;
+  background: var(--surface-2); border: 1px solid var(--line); padding: 14px;
+  display: grid; place-items: center;
+}
+.mat img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; display: block; }
+.drop {
+  width: 100%; height: 100%;
+  display: grid; place-content: center; gap: 6px; text-align: center;
+  color: var(--muted); background: transparent;
+  border: 1.5px dashed var(--line); border-radius: 2px;
+  font: inherit; font-size: 16px; cursor: pointer; padding: 16px;
+}
+.drop:hover:not(:disabled) { border-color: var(--accent); color: var(--ink); }
+.drop:disabled { cursor: default; }
+.drop strong { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; color: var(--ink); }
+.img-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--font-label); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 3px; padding: 7px 10px; cursor: pointer;
+}
+.btn:hover { border-color: var(--ink); }
+.idea { margin: 0; color: var(--muted); font-size: 15px; }
+.idea b { font-weight: 500; color: var(--ink); }
+
+.plate { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.wall { border-top: 2px solid var(--ink); padding-top: 14px; display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field.wide { grid-column: 1 / -1; }
+.field .label { color: var(--muted); }
+input[type="text"], textarea {
+  font: inherit; color: var(--ink); background: transparent;
+  border: 0; border-bottom: 1px solid var(--line); border-radius: 0;
+  padding: 4px 0 6px; width: 100%; min-width: 0; resize: vertical;
+}
+input[type="text"]::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.7; font-style: italic; }
+input[type="text"]:focus, textarea:focus { outline: none; border-bottom-color: var(--accent); box-shadow: 0 1px 0 var(--accent); }
+.field.title input { font-family: var(--font-display); font-weight: 500; font-size: 1.35rem; line-height: 1.2; }
+textarea { min-height: 7.2em; line-height: 1.55; field-sizing: content; }
+.essay { display: flex; flex-direction: column; gap: 18px; }
+:disabled { opacity: 0.8; }
+
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 780px) {
+  .top { grid-template-columns: minmax(0, 1fr); }
+  .week-head { grid-template-columns: auto minmax(0, 1fr); }
+  .week-head .status { grid-column: 1 / -1; justify-self: start; }
+  .week-body { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  .mat { max-width: 340px; }
+  .wall { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="kicker">Wekelijkse bijdrage · Kerst</p>
+      <h1>Kunstlogboek Kerst</h1>
+      <p class="intro">Twaalf weken, twaalf thema's. Kies elke week één kunstwerk, voeg een afbeelding toe en vul het label in met kunstenaar, titel, jaar, stroming, je reden en je mening.</p>
+    </div>
+    <div class="controls">
+      <label class="label" for="startdate">Eerste week begint op</label>
+      <input type="date" id="startdate">
+    </div>
+  </header>
+
+  <section class="overview" aria-label="Voortgang">
+    <div class="overview-row">
+      <span class="stat" id="stat">0 van 12 weken volledig</span>
+      <span class="save" id="save" role="status" aria-live="polite"></span>
+    </div>
+    <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+    <nav class="nav" id="nav" aria-label="Spring naar week"></nav>
+  </section>
+
+  <p class="notice" id="notice" hidden></p>
+
+  <main class="weeks" id="weeks"></main>
+
+  <footer>Controleer jaartal en titel van elk werk altijd bij een museum of betrouwbare bron. De ideeën bij de thema's zijn alleen een startpunt.</footer>
+</div>
+
+<script>
+(function () {
+  var THEMES = [
+    { t: "Street art", idea: "Banksy, Seasons Greetings (2018)", a: "Banksy", w: "Seasons Greetings", y: "2018", m: "Street art" },
+    { t: "Barok", idea: "Rembrandt, De aanbidding van de herders (1646)", a: "Rembrandt van Rijn", w: "De aanbidding van de herders", y: "1646", m: "Barok" },
+    { t: "Aquarelle", idea: "Carl Larsson, Ett hem (1899)", a: "Carl Larsson", w: "Ett hem", y: "1899", m: "" },
+    { t: "Bloemen", idea: "Jan Davidsz. de Heem, een bloemenstilleven (17e eeuw)", a: "Jan Davidsz. de Heem", w: "Bloemenstilleven", y: "17e eeuw", m: "Barok" },
+    { t: "Griekse mythologie", idea: "Botticelli, De geboorte van Venus (rond 1485)", a: "Sandro Botticelli", w: "De geboorte van Venus", y: "rond 1485", m: "Renaissance" },
+    { t: "Conceptuele kunst", idea: "Joseph Kosuth, One and Three Chairs (1965)", a: "Joseph Kosuth", w: "One and Three Chairs", y: "1965", m: "Conceptuele kunst" },
+    { t: "Oranje", idea: "Mark Rothko, Orange and Yellow (1956)", a: "Mark Rothko", w: "Orange and Yellow", y: "1956", m: "Abstract expressionisme" },
+    { t: "Fotografie", idea: "Henri Cartier-Bresson, Derrière la gare Saint-Lazare (1932)", a: "Henri Cartier-Bresson", w: "Derrière la gare Saint-Lazare", y: "1932", m: "" },
+    { t: "Pop art", idea: "Andy Warhol, Campbell's Soup Cans (1962)", a: "Andy Warhol", w: "Campbell's Soup Cans", y: "1962", m: "Pop art" },
+    { t: "Salvador Dalí", idea: "De volharding van het geheugen (1931)", a: "Salvador Dalí", w: "De volharding van het geheugen", y: "1931", m: "Surrealisme" },
+    { t: "Beeldhouwkunst", idea: "Bernini, Apollo en Daphne (1622–1625)", a: "Gian Lorenzo Bernini", w: "Apollo en Daphne", y: "1622–1625", m: "Barok" },
+    { t: "Monsters", idea: "Jheronimus Bosch, De verzoeking van de heilige Antonius (rond 1500)", a: "Jheronimus Bosch", w: "De verzoeking van de heilige Antonius", y: "rond 1500", m: "Renaissance" }
+  ];
+  var TEXT = ["artist", "title", "year", "movement", "why", "opinion"];
+  var TOTAL = TEXT.length + 1; // zes velden plus de afbeelding
+
+  var state = {}, refs = {}, timers = {}, busy = {}, again = {};
+  var db = null, assets = null, readOnly = false, startDate = "";
+
+  function $(id) { return document.getElementById(id); }
+  function pad(n) { return n < 10 ? "0" + n : String(n); }
+  function mk(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  /* ---------- opbouw ---------- */
+  function field(n, key, label, ph, kind, extra) {
+    var wrap = mk("div", "field" + (extra ? " " + extra : ""));
+    var id = "f-" + n + "-" + key;
+    var lab = mk("label", "label", label);
+    lab.setAttribute("for", id);
+    var inp;
+    if (kind === "area") { inp = document.createElement("textarea"); }
+    else { inp = document.createElement("input"); inp.type = "text"; inp.autocomplete = "off"; }
+    inp.id = id;
+    inp.placeholder = ph;
+    inp.addEventListener("input", function () {
+      state[n][key] = inp.value;
+      refreshWeek(n);
+      queue(n);
+    });
+    wrap.appendChild(lab);
+    wrap.appendChild(inp);
+    refs[n][key] = inp;
+    return wrap;
+  }
+
+  function build() {
+    var host = $("weeks"), nav = $("nav");
+    THEMES.forEach(function (th, i) {
+      var n = i + 1;
+      state[n] = { artist: "", title: "", year: "", movement: "", why: "", opinion: "", img: null };
+      refs[n] = {};
+
+      var a = mk("a", "chip", String(n));
+      a.href = "#week-" + n;
+      a.setAttribute("aria-label", "Week " + n + ": " + th.t);
+      a.title = "Week " + n + ": " + th.t;
+      a.id = "chip-" + n;
+      nav.appendChild(a);
+
+      var sec = mk("section", "week");
+      sec.id = "week-" + n;
+      sec.setAttribute("aria-labelledby", "wt-" + n);
+
+      var head = mk("div", "week-head");
+      head.appendChild(mk("span", "week-no", pad(n)));
+      var tt = mk("div", "week-title");
+      var h2 = mk("h2", null, th.t); h2.id = "wt-" + n;
+      tt.appendChild(h2);
+      var dt = mk("p", "week-date mono"); dt.id = "date-" + n;
+      tt.appendChild(dt);
+      head.appendChild(tt);
+      var st = mk("span", "status mono"); st.id = "status-" + n;
+      head.appendChild(st);
+      sec.appendChild(head);
+
+      var body = mk("div", "week-body");
+
+      var frame = mk("div", "frame");
+      var mat = mk("div", "mat"); mat.id = "mat-" + n;
+      frame.appendChild(mat);
+      var acts = mk("div", "img-actions"); acts.id = "acts-" + n;
+      frame.appendChild(acts);
+      var file = document.createElement("input");
+      file.type = "file"; file.accept = "image/png,image/jpeg,image/webp,image/gif";
+      file.hidden = true; file.id = "file-" + n;
+      file.addEventListener("change", function () {
+        if (file.files && file.files[0]) upload(n, file.files[0]);
+        file.value = "";
+      });
+      frame.appendChild(file);
+      var idea = mk("p", "idea");
+      idea.appendChild(document.createTextNode("Idee: "));
+      idea.appendChild(mk("b", null, th.idea));
+      frame.appendChild(idea);
+      body.appendChild(frame);
+
+      var plate = mk("div", "plate");
+      var wall = mk("div", "wall");
+      wall.appendChild(field(n, "artist", "Kunstenaar", "bv. " + th.a, "line"));
+      wall.appendChild(field(n, "title", "Titel van het werk", "bv. " + th.w, "line", "title wide"));
+      wall.appendChild(field(n, "year", "Gemaakt in", "bv. " + th.y, "line"));
+      wall.appendChild(field(n, "movement", "Stroming", th.m ? "bv. " + th.m : "Stroming of stijl", "line"));
+      plate.appendChild(wall);
+      var essay = mk("div", "essay");
+      essay.appendChild(field(n, "why", "Waarom heb ik dit werk gekozen?", "Wat trok je aan? Wat doet het met je?", "area"));
+      essay.appendChild(field(n, "opinion", "Mijn mening over het werk", "Wat vind je ervan, en waarom?", "area"));
+      plate.appendChild(essay);
+      body.appendChild(plate);
+
+      sec.appendChild(body);
+      host.appendChild(sec);
+      renderImg(n);
+      refreshWeek(n);
+    });
+    renderDates();
+  }
+
+  /* ---------- weergave ---------- */
+  function filled(n) {
+    var c = 0, s = state[n];
+    TEXT.forEach(function (k) { if ((s[k] || "").trim()) c++; });
+    if (s.img) c++;
+    return c;
+  }
+  function refreshWeek(n) {
+    var c = filled(n), done = c === TOTAL;
+    var st = $("status-" + n);
+    st.textContent = done ? "Compleet" : c === 0 ? "Leeg" : c + " / " + TOTAL;
+    st.className = "status mono" + (done ? " done" : "");
+    $("chip-" + n).className = "chip" + (done ? " done" : "");
+    refreshTotal();
+  }
+  function refreshTotal() {
+    var d = 0;
+    for (var n = 1; n <= THEMES.length; n++) if (filled(n) === TOTAL) d++;
+    $("stat").textContent = d + " van " + THEMES.length + " weken volledig";
+    $("bar").style.width = Math.round(d / THEMES.length * 100) + "%";
+  }
+  function renderDates() {
+    var f1 = new Intl.DateTimeFormat("nl-BE", { day: "numeric", month: "short" });
+    var f2 = new Intl.DateTimeFormat("nl-BE", { day: "numeric", month: "short", year: "numeric" });
+    var base = null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(startDate)) {
+      var p = startDate.split("-");
+      base = new Date(+p[0], +p[1] - 1, +p[2]);
+    }
+    for (var n = 1; n <= THEMES.length; n++) {
+      var out = $("date-" + n);
+      if (!base || isNaN(base.getTime())) { out.textContent = "Week " + n + " · kies een startdatum"; continue; }
+      var s = new Date(base.getFullYear(), base.getMonth(), base.getDate() + 7 * (n - 1));
+      var e = new Date(s.getFullYear(), s.getMonth(), s.getDate() + 6);
+      out.textContent = "Week van " + f1.format(s) + " tot " + f2.format(e);
+    }
+  }
+  function renderImg(n) {
+    var mat = $("mat-" + n), acts = $("acts-" + n);
+    mat.textContent = ""; acts.textContent = "";
+    var id = state[n].img;
+    if (id) {
+      var img = document.createElement("img");
+      img.alt = state[n].title ? "Afbeelding van " + state[n].title : "Gekozen kunstwerk voor week " + n;
+      img.src = "/_blob/" + id;
+      img.addEventListener("error", function () { mat.textContent = ""; mat.appendChild(mk("p", "idea", "De afbeelding kan niet worden geladen.")); });
+      mat.appendChild(img);
+      if (assets && !readOnly) {
+        var rep = mk("button", "btn", "Vervangen"); rep.type = "button";
+        rep.addEventListener("click", function () { $("file-" + n).click(); });
+        var del = mk("button", "btn", "Verwijderen"); del.type = "button";
+        del.addEventListener("click", function () { state[n].img = null; renderImg(n); refreshWeek(n); queue(n); });
+        acts.appendChild(rep); acts.appendChild(del);
+      }
+    } else {
+      var b = mk("button", "drop"); b.type = "button";
+      b.appendChild(mk("strong", null, assets && !readOnly ? "Afbeelding toevoegen" : "Nog geen afbeelding"));
+      b.appendChild(mk("span", null, assets && !readOnly ? "Kies een foto van het kunstwerk (png, jpg, webp)" : "Uploaden kan alleen met bewerkrechten"));
+      if (assets && !readOnly) b.addEventListener("click", function () { $("file-" + n).click(); });
+      else b.disabled = true;
+      mat.appendChild(b);
+    }
+  }
+  function setSave(kind, text) {
+    var s = $("save");
+    s.dataset.state = kind;
+    s.textContent = text;
+  }
+  function notice(text) {
+    var n = $("notice");
+    if (text) { n.textContent = text; n.hidden = false; } else { n.hidden = true; }
+  }
+  function lockFields() {
+    readOnly = true;
+    document.querySelectorAll(".week input[type=text], .week textarea, #startdate").forEach(function (i) { i.disabled = true; });
+    for (var n = 1; n <= THEMES.length; n++) renderImg(n);
+    notice("Je kunt dit logboek bekijken maar niet bewerken.");
+  }
+
+  /* ---------- opslaan ---------- */
+  function snapshotOf(n) {
+    var s = state[n], o = {};
+    TEXT.forEach(function (k) { o[k] = s[k] || ""; });
+    o.img = s.img || null;
+    return o;
+  }
+  function queue(n) {
+    if (!db) { setSave("nodb", "Niet opgeslagen"); return; }
+    clearTimeout(timers[n]);
+    setSave("dirty", "Wijzigingen…");
+    timers[n] = setTimeout(function () { flush(n); }, 700);
+  }
+  function flush(n) {
+    if (!db || readOnly) return;
+    if (busy[n]) { again[n] = true; return; }
+    busy[n] = true;
+    setSave("saving", "Opslaan…");
+    db.doc("weeks/w" + pad(n)).set(snapshotOf(n)).then(function () {
+      setSave("saved", "Opgeslagen");
+    }).catch(function (e) {
+      if (e && e.code === "invalid_argument") { lockFields(); setSave("error", "Alleen lezen"); }
+      else setSave("error", "Opslaan mislukt, probeer het opnieuw");
+    }).then(function () {
+      busy[n] = false;
+      if (again[n]) { again[n] = false; flush(n); }
+    });
+  }
+
+  function resize(file) {
+    return new Promise(function (resolve) {
+      if (!window.createImageBitmap || file.type === "image/gif") return resolve(file);
+      createImageBitmap(file).then(function (bm) {
+        var max = 1600, r = Math.min(1, max / Math.max(bm.width, bm.height));
+        if (r === 1 && file.size < 2e6) return resolve(file);
+        var c = document.createElement("canvas");
+        c.width = Math.round(bm.width * r); c.height = Math.round(bm.height * r);
+        c.getContext("2d").drawImage(bm, 0, 0, c.width, c.height);
+        c.toBlob(function (b) { resolve(b || file); }, "image/jpeg", 0.88);
+      }).catch(function () { resolve(file); });
+    });
+  }
+  function upload(n, file) {
+    if (!assets) return;
+    setSave("saving", "Afbeelding uploaden…");
+    resize(file).then(function (blob) { return assets.upload(blob); }).then(function (r) {
+      state[n].img = r.id;
+      renderImg(n); refreshWeek(n);
+      queue(n);
+    }).catch(function (e) {
+      var c = e && e.code;
+      setSave("error", c === "too_large" ? "Die afbeelding is te groot" : c === "unsupported_type" ? "Dit bestandstype kan niet" : "Uploaden mislukt");
+    });
+  }
+
+  /* ---------- verbinden ---------- */
+  function apply(n, d) {
+    TEXT.forEach(function (k) {
+      var v = typeof d[k] === "string" ? d[k] : "";
+      var inp = refs[n][k];
+      if (inp !== document.activeElement && inp.value !== v) inp.value = v;
+      if (inp !== document.activeElement) state[n][k] = v;
+    });
+    var img = typeof d.img === "string" && /^[0-9a-f]{32}$/.test(d.img) ? d.img : null;
+    if (img !== state[n].img) { state[n].img = img; renderImg(n); }
+    refreshWeek(n);
+  }
+  function use(name) {
+    try { return window.claude && window.claude.use ? window.claude.use(name).catch(function () { return null; }) : Promise.resolve(null); }
+    catch (e) { return Promise.resolve(null); }
+  }
+
+  function connect() {
+    Promise.all([use("db"), use("user"), use("assets")]).then(function (r) {
+      db = r[0]; assets = r[2];
+      var user = r[1];
+      var wp = user && user.can ? user.can("data.write") : Promise.resolve(null);
+      return Promise.resolve(wp).then(function (can) {
+        if (can === false) lockFields();
+        if (!db) {
+          notice("Opslaan is hier niet beschikbaar. Open het logboek via de gedeelde link en meld je aan; wat je nu typt blijft niet bewaard.");
+          setSave("nodb", "Niet opgeslagen");
+          for (var n = 1; n <= THEMES.length; n++) renderImg(n);
+          return;
+        }
+        for (var m = 1; m <= THEMES.length; m++) renderImg(m);
+        var loaded = false;
+        var timer = setTimeout(function () { if (!loaded) setSave("dirty", "Opgeslagen gegevens zijn nog niet bereikbaar"); }, 10000);
+        var fail = function () { clearTimeout(timer); setSave("error", "Gegevens laden mislukt"); };
+        db.collection("weeks").onSnapshot(function (snap) {
+          snap.docs.forEach(function (d) {
+            var n = parseInt(d.id.slice(1), 10);
+            if (n >= 1 && n <= THEMES.length && d.data()) apply(n, d.data());
+          });
+          if (!snap.metadata.fromCache) { loaded = true; clearTimeout(timer); if (!readOnly && $("save").dataset.state !== "saving") setSave("saved", "Alles bewaard"); }
+        }, fail);
+        db.doc("meta/settings").onSnapshot(function (d) {
+          var v = d.exists && d.data() && typeof d.data().start === "string" ? d.data().start : "";
+          if (document.activeElement !== $("startdate")) $("startdate").value = v;
+          startDate = v; renderDates();
+        }, function () {});
+      });
+    });
+  }
+
+  build();
+  $("startdate").addEventListener("change", function () {
+    startDate = this.value; renderDates();
+    if (db && !readOnly) {
+      setSave("saving", "Opslaan…");
+      db.doc("meta/settings").set({ start: startDate }).then(function () { setSave("saved", "Opgeslagen"); })
+        .catch(function () { setSave("error", "Opslaan mislukt, probeer het opnieuw"); });
+    }
+  });
+  setSave("idle", "");
+  connect();
+})();
+</script>
+
+</body></html>
